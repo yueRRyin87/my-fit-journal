@@ -1,0 +1,119 @@
+{
+  "prs": [
+    {
+      "id": 1,
+      "date": "2025-09-01",
+      "lift": "卧推",
+      "weight": 90,
+      "reps": 3,
+      "freq": "每周2次",
+      "recovery": "72h"
+    },
+    {
+      "id": 2,
+      "date": "2025-10-01",
+      "lift": "卧推",
+      "weight": 95,
+      "reps": 2,
+      "freq": "每周2次",
+      "recovery": "72h"
+    },
+    {
+      "id": 3,
+      "date": "2025-11-01",
+      "lift": "卧推",
+      "weight": 100,
+      "reps": 1,
+      "freq": "每周2次",
+      "recovery": "96h"
+    },
+    {
+      "id": 4,
+      "date": "2025-09-01",
+      "lift": "深蹲",
+      "weight": 130,
+      "reps": 3,
+      "freq": "每周2次",
+      "recovery": "96h"
+    },
+    {
+      "id": 5,
+      "date": "2025-10-01",
+      "lift": "深蹲",
+      "weight": 137.5,
+      "reps": 2,
+      "freq": "每周2次",
+      "recovery": "96h"
+    },
+    {
+      "id": 6,
+      "date": "2025-11-01",
+      "lift": "深蹲",
+      "weight": 145,
+      "reps": 1,
+      "freq": "每周2次",
+      "recovery": "120h"
+    },
+    {
+      "id": 7,
+      "date": "2025-09-01",
+      "lift": "硬拉",
+      "weight": 160,
+      "reps": 3,
+      "freq": "每周1次",
+      "recovery": "120h"
+    },
+    {
+      "id": 8,
+      "date": "2025-10-01",
+      "lift": "硬拉",
+      "weight": 170,
+      "reps": 2,
+      "freq": "每周1次",
+      "recovery": "120h"
+    },
+    {
+      "id": 9,
+      "date": "2025-11-01",
+      "lift": "硬拉",
+      "weight": 180,
+      "reps": 1,
+      "freq": "每周1次",
+      "recovery": "144h"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "name": "肌酸一水合物",
+      "type": "补剂",
+      "score": 4.8,
+      "note": "力量输出稳定提升，性价比高。"
+    },
+    {
+      "id": 2,
+      "name": "乳清蛋白",
+      "type": "补剂",
+      "score": 4.5,
+      "note": "补足蛋白方便，训练后恢复更顺畅。"
+    },
+    {
+      "id": 3,
+      "name": "拉力带",
+      "type": "工具",
+      "score": 4.6,
+      "note": "背部训练末组更集中，减少握力短板干扰。"
+    },
+    {
+      "id": 4,
+      "name": "举重腰带",
+      "type": "工具",
+      "score": 4.3,
+      "note": "大重量深蹲和硬拉安全感明显提高。"
+    }
+  ],
+  "challenge": {
+    "goalText": "卧推 +2.5kg，深蹲 +5kg，硬拉 +5kg",
+    "participants": 12
+  }
+}
