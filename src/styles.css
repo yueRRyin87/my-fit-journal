@@ -17,4 +17,7 @@ nav a.active { color:var(--primary); border-bottom:2px solid var(--primary); }
 table { width:100%; border-collapse:collapse; }
 th,td { border-bottom:1px solid #334155; padding:8px; text-align:left; }
 .site-footer { border-top:1px solid #334155; color:var(--muted); padding:14px 0; }
+.field-label { display:block; margin:10px 0 6px; font-size:14px; color:var(--muted); }
+input[type='number'] { width:100%; border:1px solid #475569; background:#0b1220; color:var(--text); border-radius:8px; padding:8px 10px; }
+.compare-result { margin:10px 0 0; font-weight:600; }
 @media (max-width:860px){ .hero,.cards-3{ grid-template-columns:1fr; } }

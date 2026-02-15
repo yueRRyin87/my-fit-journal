@@ -1,4 +1,4 @@
-const { useEffect, useState } = React;
+const { useEffect, useMemo, useState } = React;
 
 const API_BASE = 'http://localhost:4000/api';
 
@@ -33,7 +33,7 @@ function HomePage({ challenge, prs, joinChallenge }) {
     <>
       <section className="hero">
         <div>
-          <p className="tag">React + Node API</p>
+          <p className="tag">React + TypeScript Backend</p>
           <h2>记录每一次突破，展示你的健身旅程进步</h2>
           <p>个人健身网站基础框架：PR历程、补剂评价、挑战互动、真实数据展示。</p>
         </div>
@@ -58,10 +58,56 @@ function HomePage({ challenge, prs, joinChallenge }) {
   );
 }
 
+function LiftCompare({ lift, prs }) {
+  const [today, setToday] = useState('');
+
+  const best = useMemo(() => {
+    const rows = prs.filter((r) => r.lift === lift);
+    if (!rows.length) return 0;
+    return Math.max(...rows.map((r) => Number(r.weight)));
+  }, [lift, prs]);
+
+  const todayNum = Number(today);
+  const hasInput = today.trim() !== '' && !Number.isNaN(todayNum);
+  const diff = hasInput ? (todayNum - best).toFixed(1) : null;
+
+  let status = '请输入今日重量后自动对比';
+  if (hasInput) {
+    if (todayNum > best) status = `🎉 新PR！比历史最大重量高 ${diff} kg`;
+    else if (todayNum === best) status = `💪 持平历史PR（${best} kg）`;
+    else status = `继续冲！距离PR还差 ${(best - todayNum).toFixed(1)} kg`;
+  }
+
+  return (
+    <article className="card">
+      <h3>{lift}</h3>
+      <p className="muted">历史PR：{best} kg</p>
+      <label className="field-label">今日重量（kg）</label>
+      <input
+        type="number"
+        min="0"
+        step="0.5"
+        value={today}
+        onChange={(e) => setToday(e.target.value)}
+        placeholder="例如 102.5"
+      />
+      <p className="compare-result">{status}</p>
+    </article>
+  );
+}
+
 function PrPage({ prs }) {
   return (
     <>
       <h2>PR 历程记录</h2>
+      <p className="muted">录入今日重量后会自动和历史最大重量（PR）比较。</p>
+
+      <section className="cards-3 top-gap">
+        <LiftCompare lift="卧推" prs={prs} />
+        <LiftCompare lift="深蹲" prs={prs} />
+        <LiftCompare lift="硬拉" prs={prs} />
+      </section>
+
       <div className="card top-gap">
         <table>
           <thead><tr><th>日期</th><th>动作</th><th>重量</th><th>次数</th><th>频率</th><th>恢复</th></tr></thead>

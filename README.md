@@ -1,10 +1,11 @@
-# My Fit Journal（React + 简单后端）
+# My Fit Journal（React + TypeScript 后端）
 
 这是一个基础的个人健身记录网站：
 
 - 前端：React（CDN 方式）
-- 后端：Node.js 原生 HTTP API（无需额外依赖）
+- 后端：Node.js + TypeScript（源码在 `server/src/index.ts`）
 - 功能：PR 记录、补剂/工具评价、今日挑战参与
+- 新增：在 PR 页面输入今日重量，自动对比历史最大重量（PR）并提示差距/破纪录
 
 ## 启动
 
@@ -16,3 +17,11 @@ npm start
 
 - 前端页面：<http://localhost:4000>
 - API：`/api/prs`、`/api/reviews`、`/api/challenge`、`/api/challenge/join`
+
+## TypeScript 构建（可选）
+
+```bash
+npm run build:server
+```
+
+> 当前仓库已包含可直接运行的编译产物：`server/dist/index.js`。
