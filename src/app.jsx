@@ -24,35 +24,141 @@ function Navbar({ page, setPage }) {
   );
 }
 
+function HomeTrend({ prs }) {
+  const lifts = ['卧推', '深蹲', '硬拉'];
+  const colors = ['#bf6f3d', '#728c69', '#8f5f4f'];
+  const pointsByLift = lifts.map((lift) => prs
+    .filter((item) => item.lift === lift)
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+  );
+
+  const allWeights = prs.map((p) => p.weight);
+  const min = Math.min(...allWeights, 60);
+  const max = Math.max(...allWeights, 200);
+  const w = 700;
+  const h = 270;
+  const pad = 34;
+
+  const x = (i, total) => pad + (i * (w - pad * 2)) / Math.max(1, total - 1);
+  const y = (weight) => h - pad - ((weight - min) / Math.max(1, max - min)) * (h - pad * 2);
+
+  return (
+    <div className="chart-card">
+      <h3>动作 PR 与重量更迭</h3>
+      <svg viewBox={`0 0 ${w} ${h}`} className="trend-chart" role="img" aria-label="PR trend">
+        {Array.from({ length: 4 }).map((_, idx) => {
+          const yy = pad + (idx * (h - pad * 2)) / 3;
+          return <line key={idx} x1={pad} y1={yy} x2={w - pad} y2={yy} stroke="#d8cbb8" />;
+        })}
+
+        {pointsByLift.map((rows, idx) => {
+          const poly = rows.map((r, i) => `${x(i, rows.length)},${y(r.weight)}`).join(' ');
+          return (
+            <g key={lifts[idx]}>
+              <polyline points={poly} fill="none" stroke={colors[idx]} strokeWidth="3" />
+              {rows.map((r, i) => (
+                <circle key={r.id} cx={x(i, rows.length)} cy={y(r.weight)} r="4" fill={colors[idx]}>
+                  <title>{`${r.lift} ${r.weight}kg`}</title>
+                </circle>
+              ))}
+              <text x={w - pad + 6} y={y(rows[rows.length - 1]?.weight ?? min)} fill={colors[idx]} fontSize="12">{lifts[idx]}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 function HomePage({ challenge, prs, joinChallenge }) {
-  const latest = ['卧推', '深蹲', '硬拉']
-    .map((lift) => prs.filter((r) => r.lift === lift).sort((a, b) => new Date(b.date) - new Date(a.date))[0])
-    .filter(Boolean);
+  const timeline = [
+    { year: '2021', note: '开始系统训练，重建动作模式与训练习惯。' },
+    { year: '2022', note: '建立基础力量，卧推和深蹲进入稳定增重阶段。' },
+    { year: '2023', note: '优化恢复与饮食，训练周期更可持续。' },
+    { year: '2024-Now', note: '聚焦动作质量与长期进步，挑战更高 PR。' }
+  ];
+
+  const weeklyMoments = [
+    { title: '周一：重训练', text: '专注主项，记录动作主观难度（RPE）和每组质量。' },
+    { title: '周三：技术日', text: '降低负重，打磨动作节奏与控制感。' },
+    { title: '周五：冲刺日', text: '测试当周状态，决定是否刷新当周最佳。' }
+  ];
+
+  useEffect(() => {
+    const items = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('shown');
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
-      <section className="hero">
+      <section className="overview-bar reveal">
+        <p>
+          这个网站用于：记录训练日志、展示 PR 变化、分享补剂与工具体验，并通过每月挑战持续激励自己与他人。
+        </p>
+      </section>
+
+      <section className="intro-section panel top-gap reveal">
         <div>
-          <p className="tag">React + TypeScript Backend</p>
-          <h2>记录每一次突破，展示你的健身旅程进步</h2>
-          <p>个人健身网站基础框架：PR历程、补剂评价、挑战互动、真实数据展示。</p>
+          <p className="kicker">Brief Intro</p>
+          <h2>你好，我是一个长期健身记录者</h2>
+          <p>
+            我把这几年训练中的关键数据、经验和反思都放在这里。
+            希望这个空间不仅记录我的变化，也能给正在训练的你一些真实参考。
+          </p>
         </div>
-        <div className="card">
-          <h3>今日 PR 挑战</h3>
+        <aside className="challenge-box">
+          <h3>本月挑战</h3>
           <p>{challenge.goalText}</p>
           <p className="muted">参与人数：{challenge.participants}</p>
           <button className="btn" onClick={joinChallenge}>加入挑战</button>
+        </aside>
+      </section>
+
+      <section className="panel top-gap reveal">
+        <h3>我的几年健身历程</h3>
+        <div className="journey-grid">
+          <div className="photo-placeholder">训练照片区（可替换为你的真实照片）</div>
+          <div className="timeline-list">
+            {timeline.map((item) => (
+              <article key={item.year} className="timeline-item">
+                <h4>{item.year}</h4>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="cards-3 top-gap">
-        {latest.map((row) => (
-          <article className="card" key={row.id}>
-            <h3>{row.lift}</h3>
-            <p><strong>{row.weight}kg × {row.reps}</strong></p>
-            <p className="muted">{row.date}</p>
-          </article>
-        ))}
+      <section className="panel top-gap reveal">
+        <h3>这一周我怎么训练</h3>
+        <div className="stack-list">
+          {weeklyMoments.map((item) => (
+            <article className="stack-card" key={item.title}>
+              <h4>{item.title}</h4>
+              <p>{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel top-gap reveal">
+        <blockquote>
+          “真正让我进步的不是某一次神奇训练，而是每周持续出现的那一点点进步。”
+        </blockquote>
+      </section>
+
+      <section className="panel top-gap reveal">
+        <HomeTrend prs={prs} />
       </section>
     </>
   );
@@ -69,11 +175,10 @@ function LiftCompare({ lift, prs }) {
 
   const todayNum = Number(today);
   const hasInput = today.trim() !== '' && !Number.isNaN(todayNum);
-  const diff = hasInput ? (todayNum - best).toFixed(1) : null;
 
   let status = '请输入今日重量后自动对比';
   if (hasInput) {
-    if (todayNum > best) status = `🎉 新PR！比历史最大重量高 ${diff} kg`;
+    if (todayNum > best) status = `🎉 新PR！比历史最大重量高 ${(todayNum - best).toFixed(1)} kg`;
     else if (todayNum === best) status = `💪 持平历史PR（${best} kg）`;
     else status = `继续冲！距离PR还差 ${(best - todayNum).toFixed(1)} kg`;
   }
