@@ -18,9 +18,6 @@ function sendJson(res, code, data) {
 function readDb() {
     return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
 }
-function writeDb(db) {
-    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
-}
 function serveFile(req, res) {
     const reqPath = req.url === '/' ? '/index.html' : req.url ?? '/index.html';
     const safe = path.normalize(reqPath).replace(/^\.+/, '');
@@ -52,31 +49,6 @@ const server = http.createServer((req, res) => {
         return sendJson(res, 200, readDb().prs);
     if (req.url === '/api/reviews' && req.method === 'GET')
         return sendJson(res, 200, readDb().reviews);
-    if (req.url === '/api/challenge' && req.method === 'GET')
-        return sendJson(res, 200, readDb().challenge);
-    if (req.url === '/api/challenge/join' && req.method === 'POST') {
-        let body = '';
-        req.on('data', (chunk) => {
-            body += String(chunk);
-        });
-        req.on('end', () => {
-            const db = readDb();
-            db.challenge.participants += 1;
-            writeDb(db);
-            let name = '访客';
-            if (body) {
-                try {
-                    const parsed = JSON.parse(body);
-                    if (parsed.name)
-                        name = parsed.name;
-                }
-                catch {
-                }
-            }
-            sendJson(res, 201, { message: `${name} joined`, participants: db.challenge.participants });
-        });
-        return;
-    }
     if (req.url && !req.url.startsWith('/api')) {
         serveFile(req, res);
         return;

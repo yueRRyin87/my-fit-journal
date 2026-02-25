@@ -21,15 +21,10 @@ type Review = {
   note: string;
 };
 
-type Challenge = {
-  goalText: string;
-  participants: number;
-};
 
 type Database = {
   prs: PRRecord[];
   reviews: Review[];
-  challenge: Challenge;
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -51,9 +46,6 @@ function readDb(): Database {
   return JSON.parse(fs.readFileSync(dbPath, 'utf8')) as Database;
 }
 
-function writeDb(db: Database): void {
-  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
-}
 
 function serveFile(req: IncomingMessage, res: ServerResponse): void {
   const reqPath = req.url === '/' ? '/index.html' : req.url ?? '/index.html';
@@ -88,31 +80,6 @@ const server = http.createServer((req, res) => {
   if (req.url === '/api/health' && req.method === 'GET') return sendJson(res, 200, { ok: true });
   if (req.url === '/api/prs' && req.method === 'GET') return sendJson(res, 200, readDb().prs);
   if (req.url === '/api/reviews' && req.method === 'GET') return sendJson(res, 200, readDb().reviews);
-  if (req.url === '/api/challenge' && req.method === 'GET') return sendJson(res, 200, readDb().challenge);
-
-  if (req.url === '/api/challenge/join' && req.method === 'POST') {
-    let body = '';
-    req.on('data', (chunk) => {
-      body += String(chunk);
-    });
-
-    req.on('end', () => {
-      const db = readDb();
-      db.challenge.participants += 1;
-      writeDb(db);
-      let name = '访客';
-      if (body) {
-        try {
-          const parsed = JSON.parse(body) as { name?: string };
-          if (parsed.name) name = parsed.name;
-        } catch {
-          // ignore invalid body and fallback to default name
-        }
-      }
-      sendJson(res, 201, { message: `${name} joined`, participants: db.challenge.participants });
-    });
-    return;
-  }
 
   if (req.url && !req.url.startsWith('/api')) {
     serveFile(req, res);

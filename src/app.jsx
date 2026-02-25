@@ -1,6 +1,6 @@
 const { useEffect, useMemo, useState } = React;
 
-const API_BASE = 'http://localhost:4000/api';
+const API_BASE = '/api';
 
 const contactLinks = [
   { label: 'GitHub', short: '◎', href: 'https://github.com/yueRRyin87' },
@@ -137,18 +137,15 @@ function LiftCompare({ lift, prs }) {
 function App() {
   const [prs, setPrs] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [challenge, setChallenge] = useState({ goalText: '加载中...', participants: 0 });
 
   useEffect(() => {
     const load = async () => {
-      const [prsRes, reviewsRes, challengeRes] = await Promise.all([
+      const [prsRes, reviewsRes] = await Promise.all([
         fetch(`${API_BASE}/prs`).then((r) => r.json()),
-        fetch(`${API_BASE}/reviews`).then((r) => r.json()),
-        fetch(`${API_BASE}/challenge`).then((r) => r.json())
+        fetch(`${API_BASE}/reviews`).then((r) => r.json())
       ]);
       setPrs(prsRes);
       setReviews(reviewsRes);
-      setChallenge(challengeRes);
     };
     load();
   }, []);
@@ -168,16 +165,6 @@ function App() {
     return () => observer.disconnect();
   }, [prs, reviews]);
 
-  const joinChallenge = async () => {
-    await fetch(`${API_BASE}/challenge/join`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: '访客' })
-    });
-
-    const updated = await fetch(`${API_BASE}/challenge`).then((r) => r.json());
-    setChallenge(updated);
-  };
 
   const metricTrend = [
     { label: '体重', start: '58kg', now: '67kg' },
@@ -202,7 +189,7 @@ function App() {
       <Navbar />
       <main className="container section-space">
         <section id="home" className="overview-bar reveal">
-          <p>这个网站用于：记录训练日志、展示 PR 变化、分享补剂与工具体验，并通过每月挑战持续激励自己与他人。</p>
+          <p>这个网站用于：记录训练日志、展示 PR 变化、分享补剂与工具体验，并持续沉淀自己的训练与营养经验。</p>
         </section>
 
         <section className="intro-section panel top-gap reveal">
@@ -286,8 +273,6 @@ function App() {
           <h3>Contact</h3>
           <p>如果你也在做长期健身记录，欢迎交流训练计划、饮食实践和恢复经验。</p>
           <p><strong>Email：</strong>yourname@example.com</p>
-          <p className="muted">本月挑战：{challenge.goalText} · 参与人数：{challenge.participants}</p>
-          <button className="btn" onClick={joinChallenge}>我也加入挑战</button>
         </section>
       </main>
 

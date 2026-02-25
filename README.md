@@ -4,7 +4,7 @@
 
 - 前端：React（CDN 方式）
 - 后端：Node.js + TypeScript（源码在 `server/src/index.ts`）
-- 功能：PR 记录、补剂/工具评价、今日挑战参与
+- 功能：PR 记录、补剂/工具评价
 - 新增：在 PR 页面输入今日重量，自动对比历史最大重量（PR）并提示差距/破纪录
 
 ## 启动
@@ -16,7 +16,7 @@ npm start
 打开：
 
 - 前端页面：<http://localhost:4000>
-- API：`/api/prs`、`/api/reviews`、`/api/challenge`、`/api/challenge/join`
+- API：`/api/prs`、`/api/reviews`
 
 ## TypeScript 构建（可选）
 
