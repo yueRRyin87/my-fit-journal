@@ -10,11 +10,7 @@ function sendJson(res, code, data) {
     res.writeHead(code, {
         'Content-Type': 'application/json; charset=utf-8',
         'Access-Control-Allow-Origin': '*',
-<<<<<<< codex/create-personal-fitness-website-framework-aemk6h
         'Access-Control-Allow-Methods': 'GET,OPTIONS',
-=======
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
->>>>>>> main
         'Access-Control-Allow-Headers': 'Content-Type'
     });
     res.end(JSON.stringify(data));

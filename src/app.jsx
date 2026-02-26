@@ -8,6 +8,33 @@ const contactLinks = [
   { label: '下载简历', short: '⬇', href: '#contact' }
 ];
 
+const milestones = [
+  {
+    year: '2021.04',
+    title: '第一次接触力量训练',
+    detail: '哑铃卧推从 7.5kg × 8 次开始，记录了第一条训练日志。',
+    media: '训练日志照片 / 视频'
+  },
+  {
+    year: '2022.01',
+    title: '第一次成功正手引体向上',
+    detail: '从弹力带辅助到独立完成 1 次正手引体，背部训练进入新阶段。',
+    media: '引体向上视频'
+  },
+  {
+    year: '2023.09',
+    title: '第一次硬拉破 100kg',
+    detail: '硬拉做到 102.5kg，动作稳定性和核心控制都有明显提升。',
+    media: '硬拉 100kg 视频'
+  },
+  {
+    year: '2024.11',
+    title: '三大项总和持续增长',
+    detail: '从 230kg 提升到 315kg，训练计划与恢复策略逐步成型。',
+    media: '三大项总和趋势图'
+  }
+];
+
 function ContactIcons({ compact = false }) {
   return (
     <div className={`contact-icons ${compact ? 'compact' : ''}`}>
@@ -24,8 +51,10 @@ function Navbar() {
   const items = [
     ['home', '主页'],
     ['journey', '我的历程'],
+    ['milestones', '里程碑'],
     ['progress', '健身数据'],
     ['supplements', '补剂与工具'],
+    ['recipes', '增肌食谱'],
     ['contact', '联系我']
   ];
 
@@ -70,12 +99,13 @@ function HomeTrend({ prs }) {
   const y = (weight) => h - pad - ((weight - min) / Math.max(1, max - min)) * (h - pad * 2);
 
   return (
-    <div className="chart-card">
-      <h3>重量更迭图（Progression Chart）</h3>
+    <div className="chart-block">
+      <p className="kicker">PR Progression</p>
+      <h3>重量更迭图</h3>
       <svg viewBox={`0 0 ${w} ${h}`} className="trend-chart" role="img" aria-label="PR trend">
         {Array.from({ length: 4 }).map((_, idx) => {
           const yy = pad + (idx * (h - pad * 2)) / 3;
-          return <line key={idx} x1={pad} y1={yy} x2={w - pad} y2={yy} stroke="#d8cbb8" />;
+          return <line key={idx} x1={pad} y1={yy} x2={w - pad} y2={yy} stroke="#dbd0bf" />;
         })}
 
         {pointsByLift.map((rows, idx) => {
@@ -117,7 +147,7 @@ function LiftCompare({ lift, prs }) {
   }
 
   return (
-    <article className="card">
+    <article className="lift-item">
       <h4>{lift}</h4>
       <p className="muted">历史PR：{best} kg</p>
       <label className="field-label">今日重量（kg）</label>
@@ -152,19 +182,15 @@ function App() {
 
   useEffect(() => {
     const items = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('shown');
-        });
-      },
-      { threshold: 0.18 }
-    );
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('shown');
+      });
+    }, { threshold: 0.15 });
 
     items.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [prs, reviews]);
-
 
   const metricTrend = [
     { label: '体重', start: '58kg', now: '67kg' },
@@ -178,6 +204,25 @@ function App() {
     { title: '恢复餐', detail: '训练后补充：蛋白粉 + 水果 + 电解质' }
   ];
 
+
+  const bulkRecipes = [
+    {
+      name: '高蛋白牛肉能量饭',
+      macro: '约 720 kcal · 蛋白质 52g · 碳水 78g · 脂肪 20g',
+      detail: '瘦牛肉 180g + 米饭 220g + 彩椒洋葱 + 橄榄油少量，训练后 1 小时内吃。'
+    },
+    {
+      name: '鸡腿藜麦恢复碗',
+      macro: '约 680 kcal · 蛋白质 48g · 碳水 64g · 脂肪 24g',
+      detail: '去皮鸡腿肉 200g + 藜麦 120g + 牛油果半个，适合晚间补充恢复。'
+    },
+    {
+      name: '早餐增肌奶昔',
+      macro: '约 560 kcal · 蛋白质 42g · 碳水 63g · 脂肪 14g',
+      detail: '乳清蛋白 1 勺 + 燕麦 60g + 香蕉 1 根 + 花生酱 10g + 低脂奶。'
+    }
+  ];
+
   const workoutTips = [
     '深蹲先稳住核心，再下蹲到你能控制的深度。',
     '卧推时保持上背稳定，避免肩部代偿。',
@@ -188,88 +233,141 @@ function App() {
     <div>
       <Navbar />
       <main className="container section-space">
-        <section id="home" className="overview-bar reveal">
-          <p>这个网站用于：记录训练日志、展示 PR 变化、分享补剂与工具体验，并持续沉淀自己的训练与营养经验。</p>
+        <section id="home" className="hero reveal hero-stack">
+          <div className="text-column">
+            <p className="kicker">Personal Fitness Archive</p>
+            <h2>记录训练<br />追踪进步<br />分享经验</h2>
+            <span className="section-line" />
+            <p>我把健身拆成可记录、可复盘的长期系统。这里展示历年训练节点、主项 PR 变化，以及补剂和工具的真实体验。</p>
+          </div>
+          <div className="visual-column">
+            <div className="phone-hero">训练主视觉图</div>
+          </div>
         </section>
 
-        <section className="intro-section panel top-gap reveal">
-          <div>
-            <p className="kicker">Brief Intro</p>
-            <h2>我是一个持续记录健身旅程的人</h2>
-            <p>我从“想变健康”开始，到现在把健身当成长期生活方式。这个网站记录我的训练、饮食和恢复，也分享给同样想坚持的人。</p>
-            <p className="muted">当前目标：增肌 + 维持低体脂 + 长期健康生活</p>
+        <section id="journey" className="reveal split-layout reverse">
+          <div className="visual-column collage">
+            <div className="photo-block tall">阶段照片 01</div>
+            <div className="photo-block">阶段照片 02</div>
           </div>
-          <div className="photo-placeholder">个人/训练照片位</div>
+          <div className="text-column">
+            <p className="kicker">My Fitness Journey</p>
+            <h3>几年健身历程</h3>
+            <div className="timeline-list">
+              <article className="timeline-item"><h4>2021</h4><p>正式开始训练，建立一周三练习惯。</p></article>
+              <article className="timeline-item"><h4>2022</h4><p>第一次增肌成功，训练和饮食开始系统化。</p></article>
+              <article className="timeline-item"><h4>2023</h4><p>学习恢复管理，降低伤病风险。</p></article>
+              <article className="timeline-item"><h4>2024-现在</h4><p>用数据长期追踪身体变化和主项进步。</p></article>
+            </div>
+            <div className="metric-row">
+              {metricTrend.map((m) => (
+                <article className="metric-chip" key={m.label}>
+                  <strong>{m.label}</strong>
+                  <span>{m.start} → {m.now}</span>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
-        <section id="journey" className="panel top-gap reveal">
-          <h3>My Fitness Journey</h3>
-          <div className="timeline-list">
-            <article className="timeline-item"><h4>2021</h4><p>正式开始训练，建立一周三练习惯。</p></article>
-            <article className="timeline-item"><h4>2022</h4><p>第一次增肌成功，训练和饮食开始系统化。</p></article>
-            <article className="timeline-item"><h4>2023</h4><p>学习恢复管理，降低伤病风险。</p></article>
-            <article className="timeline-item"><h4>2024-现在</h4><p>用数据长期追踪身体变化和主项进步。</p></article>
+        <section id="milestones" className="reveal milestone-section">
+          <div className="milestone-head">
+            <p className="kicker">Milestones</p>
+            <h3>关键里程碑时间轴</h3>
+            <p className="muted">从第一天握起哑铃，到硬拉破百，再到三大项总和增长，用一条纵向数轴记录每个节点。</p>
           </div>
-
-          <h4 className="sub-title">体成分进度（示意）</h4>
-          <div className="stack-list">
-            {metricTrend.map((m) => (
-              <article className="stack-card" key={m.label}>
-                <strong>{m.label}</strong>
-                <p>{m.start} → {m.now}</p>
+          <div className="milestone-axis">
+            {milestones.map((item, idx) => (
+              <article className={`milestone-item ${idx % 2 === 0 ? 'left' : 'right'}`} key={item.title}>
+                <div className="milestone-card">
+                  <div className="milestone-content">
+                    <p className="milestone-year">{item.year}</p>
+                    <h4>{item.title}</h4>
+                    <p>{item.detail}</p>
+                  </div>
+                  <div className="milestone-media">{item.media}</div>
+                </div>
+                <span className="milestone-dot" aria-hidden="true" />
               </article>
             ))}
           </div>
         </section>
 
-        <section id="progress" className="panel top-gap reveal">
-          <h3>PR & Progression</h3>
-          <p className="muted">动态折线展示重量变化，同时支持输入今日重量和历史PR自动对比。</p>
+        <section id="progress" className="reveal split-layout">
+          <div className="text-column">
+            <p className="kicker">PR & Progression</p>
+            <h3>动作 PR 和重量更迭</h3>
+            <p className="muted">输入当天训练重量，系统会自动和历史 PR 对比，快速判断当前状态。</p>
+            <div className="lift-list">
+              <LiftCompare lift="卧推" prs={prs} />
+              <LiftCompare lift="深蹲" prs={prs} />
+              <LiftCompare lift="硬拉" prs={prs} />
+            </div>
+          </div>
           <HomeTrend prs={prs} />
-          <div className="cards-3 top-gap">
-            <LiftCompare lift="卧推" prs={prs} />
-            <LiftCompare lift="深蹲" prs={prs} />
-            <LiftCompare lift="硬拉" prs={prs} />
+        </section>
+
+        <section id="supplements" className="reveal split-layout">
+          <div className="visual-column">
+            <div className="phone-hero soft">补剂 / 工具图片位</div>
+          </div>
+          <div className="text-column">
+            <p className="kicker">Supplements & Tools</p>
+            <h3>补剂与工具评价</h3>
+            <div className="review-list">
+              {reviews.map((item) => (
+                <article className="review-row" key={item.id}>
+                  <p className="muted">{item.type}</p>
+                  <h4>{item.name}</h4>
+                  <p>{'★'.repeat(Math.round(item.score))} {item.score}/5 · {item.note}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section id="supplements" className="panel top-gap reveal">
-          <h3>Supplements & Tools</h3>
-          <div className="cards-3">
-            {reviews.map((item) => (
-              <article className="card" key={item.id}>
-                <p className="muted">{item.type}</p>
-                <h4>{item.name}</h4>
-                <p>{'★'.repeat(Math.round(item.score))} {item.score}/5</p>
-                <p>{item.note}</p>
-              </article>
-            ))}
+        <section className="reveal split-layout">
+          <div className="text-column">
+            <p className="kicker">Diet & Workout Notes</p>
+            <h3>饮食与训练技巧</h3>
+            <div className="plain-list">
+              {dietPlans.map((p) => (
+                <article key={p.title}>
+                  <h4>{p.title}</h4>
+                  <p>{p.detail}</p>
+                </article>
+              ))}
+            </div>
+            <ul className="tips-list">
+              {workoutTips.map((tip) => <li key={tip}>{tip}</li>)}
+            </ul>
+          </div>
+          <div className="visual-column">
+            <div className="phone-hero soft">动作示范视频 / 动图位</div>
           </div>
         </section>
 
-        <section className="panel top-gap reveal">
-          <h3>Diet & Nutrition</h3>
-          <p>每日记录：热量、蛋白质、脂肪、碳水；按目标切换饮食策略。</p>
-          <div className="stack-list">
-            {dietPlans.map((p) => (
-              <article key={p.title} className="stack-card">
-                <h4>{p.title}</h4>
-                <p>{p.detail}</p>
-              </article>
-            ))}
+
+        <section id="recipes" className="reveal split-layout recipe-section">
+          <div className="visual-column">
+            <div className="phone-hero soft">我的增肌食谱实拍 / 备餐视频位</div>
+          </div>
+          <div className="text-column">
+            <p className="kicker">My Bulking Recipes</p>
+            <h3>自创增肌食谱</h3>
+            <div className="recipe-list">
+              {bulkRecipes.map((recipe) => (
+                <article key={recipe.name} className="recipe-card">
+                  <h4>{recipe.name}</h4>
+                  <p className="macro">{recipe.macro}</p>
+                  <p>{recipe.detail}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        <section className="panel top-gap reveal">
-          <h3>Workout Plans & Tips</h3>
-          <p>示例训练计划：增肌 / 减脂 / 核心稳定；配合动作要点与常见错误提醒。</p>
-          <ul className="tips-list">
-            {workoutTips.map((tip) => <li key={tip}>{tip}</li>)}
-          </ul>
-          <div className="video-placeholder">动作示范视频/动图区域（可嵌入 YouTube 或 Bilibili）</div>
-        </section>
-
-        <section id="contact" className="panel top-gap reveal">
+        <section id="contact" className="contact-line reveal">
           <h3>Contact</h3>
           <p>如果你也在做长期健身记录，欢迎交流训练计划、饮食实践和恢复经验。</p>
           <p><strong>Email：</strong>yourname@example.com</p>
