@@ -5,32 +5,31 @@ const API_BASE = '/api';
 const contactLinks = [
   { label: 'GitHub', short: '◎', href: 'https://github.com/yueRRyin87' },
   { label: 'LinkedIn', short: '▣', href: 'https://linkedin.com' },
-  { label: '食谱区', short: '⬇', href: '#recipes' }
 ];
 
 const milestones = [
   {
     year: '2021.04',
     title: '第一次接触力量训练',
-    detail: '哑铃卧推从 7.5kg × 8 次开始，记录了第一条训练日志。',
+    detail: '需要42.5kg辅助的引体向上',
     media: '训练日志照片 / 视频'
   },
   {
-    year: '2022.01',
-    title: '第一次成功正手引体向上',
-    detail: '从弹力带辅助到独立完成 1 次正手引体，背部训练进入新阶段。',
-    media: '引体向上视频'
-  },
-  {
-    year: '2023.09',
-    title: '第一次硬拉破 100kg',
-    detail: '硬拉做到 102.5kg，动作稳定性和核心控制都有明显提升。',
-    media: '硬拉 100kg 视频'
+    year: '2023.11',
+    title: '第一次成功引体向上',
+    detail: '从器械辅助到独立完成 1 次对握引体，背部训练进入新阶段',
+    media: '引体向上图片'
   },
   {
     year: '2024.11',
+    title: '第一次硬拉破 100kg/rep',
+    detail: '硬拉做到 102.5kg，动作稳定性和核心控制都更加稳定。',
+    media: '硬拉 100kg'
+  },
+  {
+    year: '2025.112',
     title: '三大项总和持续增长',
-    detail: '从 230kg 提升到 315kg，训练计划与恢复策略逐步成型。',
+    detail: '从 100kg 提升到 230kg，三大项缓慢提升',
     media: '三大项总和趋势图'
   }
 ];
@@ -119,9 +118,9 @@ function App() {
       detail: '去皮鸡腿肉 200g + 藜麦 120g + 牛油果半个，适合晚间补充恢复。'
     },
     {
-      name: '早餐增肌奶昔',
-      macro: '约 560 kcal · 蛋白质 42g · 碳水 63g · 脂肪 14g',
-      detail: '乳清蛋白 1 勺 + 燕麦 60g + 香蕉 1 根 + 花生酱 10g + 低脂奶。'
+      name: 'ON摩卡巧克力蛋白奶昔',
+      macro: '约 300 kcal · 蛋白质 28g · 碳水 8g · 脂肪 8g',
+      detail: '双重巧克力乳清蛋白 1 勺 + 牛奶 + 冻干咖啡，比摩卡咖啡美味'
     }
   ];
 
@@ -132,28 +131,34 @@ function App() {
         <section id="home" className="hero reveal hero-stack">
           <div className="text-column">
             <p className="kicker">Personal Fitness Archive</p>
-            <h2>记录训练<br />追踪进步<br />分享经验</h2>
+            <h2>记录训练<br />追踪进步</h2>
             <span className="section-line" />
-            <p>我把健身拆成可记录、可复盘的长期系统。这里展示历年训练节点、里程碑和补剂工具的真实体验。</p>
+            <p>我和健身的三年</p>
           </div>
           <div className="visual-column">
-            <div className="phone-hero">训练主视觉图</div>
+           <div className="phone-hero">
+              <img src="images/main_visual.jpg" alt="训练主视觉图" />
+          </div>
           </div>
         </section>
 
         <section id="journey" className="reveal split-layout reverse">
           <div className="visual-column collage">
-            <div className="photo-block tall">阶段照片 01</div>
-            <div className="photo-block">阶段照片 02</div>
+            <div className="photo-block tall">
+                <img src="/images/progress1.jpg" alt="训练阶段 1" />
+              </div>
+              <div className="photo-block">
+                <img src="/images/progress2.jpg" alt="训练阶段 2" />
+                </div>
           </div>
           <div className="text-column">
             <p className="kicker">My Fitness Journey</p>
-            <h3>几年健身历程</h3>
+            <h3>4年健身历程</h3>
             <div className="timeline-list">
-              <article className="timeline-item"><h4>2021</h4><p>正式开始训练，建立一周三练习惯。</p></article>
-              <article className="timeline-item"><h4>2022</h4><p>第一次增肌成功，训练和饮食开始系统化。</p></article>
-              <article className="timeline-item"><h4>2023</h4><p>学习恢复管理，降低伤病风险。</p></article>
-              <article className="timeline-item"><h4>2024-现在</h4><p>用数据长期追踪身体变化和主项进步。</p></article>
+              <article className="timeline-item"><h4>2021</h4><p>正式开始训练，建立一周二练习惯</p></article>
+              <article className="timeline-item"><h4>2022</h4><p>增加蛋白质摄入，增肌效果明显</p></article>
+              <article className="timeline-item"><h4>2023</h4><p>学习恢复管理和运动康复，降低伤病风险</p></article>
+              <article className="timeline-item"><h4>2024-现在</h4><p>四分化训练</p></article>
             </div>
             <div className="metric-row">
               {metricTrend.map((m) => (
@@ -170,7 +175,7 @@ function App() {
           <div className="milestone-head">
             <p className="kicker">Milestones</p>
             <h3>关键里程碑时间轴</h3>
-            <p className="muted">从第一天握起哑铃，到硬拉破百，再到三大项总和增长，用一条纵向数轴记录每个节点。</p>
+            <p className="muted">从第一次握起哑铃，到硬拉破百，再到三大项总和增长，用一条纵向数轴记录我的每个节点</p>
           </div>
           <div className="milestone-axis">
             {milestones.map((item, idx) => (
