@@ -64,10 +64,19 @@ function serveFile(req: IncomingMessage, res: ServerResponse): void {
     '.css': 'text/css',
     '.js': 'application/javascript',
     '.jsx': 'application/javascript',
-    '.json': 'application/json'
+    '.json': 'application/json',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp'
   };
 
-  res.writeHead(200, { 'Content-Type': `${typeMap[ext] || 'text/plain'}; charset=utf-8` });
+  const type = typeMap[ext] || 'text/plain';
+  const value = type.startsWith('text/') || type === 'application/javascript' || type === 'application/json'
+    ? `${type}; charset=utf-8`
+    : type;
+
+  res.writeHead(200, { 'Content-Type': value });
   res.end(fs.readFileSync(filePath));
 }
 
