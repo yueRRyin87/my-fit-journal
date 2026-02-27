@@ -30,7 +30,7 @@ const milestones = [
     mediaAlt: '硬拉突破 100kg'
   },
   {
-    year: '2025.112',
+    year: '2025.12',
     title: '三大项总和持续增长',
     detail: '从 100kg 提升到 230kg，三大项缓慢提升',
     media: '/assets/images/personal_records.jpg',
