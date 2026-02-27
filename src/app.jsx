@@ -168,7 +168,7 @@ function App() {
             <p className="kicker">Personal Fitness Archive</p>
             <h2>记录训练<br />追踪进步</h2>
             <span className="section-line" />
-            <p>我和健身的三年</p>
+            <p>我和健身的四年</p>
           </div>
           <div className="visual-column">
             <div className="phone-hero">
@@ -270,8 +270,8 @@ function App() {
 
         <section id="recipes" className="reveal split-layout recipe-section">
           <div className="visual-column">
-            <div className="phone-hero soft">
-              <img src="/assets/images/first_lift.jpg" alt="力量训练记录照片" loading="lazy" />
+                       <div className="phone-hero soft">
+              <img src="/assets/images/after_meals.jpg" alt="增肌期饮食" loading="lazy" />
             </div>
           </div>
           <div className="text-column">
