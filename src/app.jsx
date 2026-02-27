@@ -43,12 +43,6 @@ const progressSlides = [
   { src: '/assets/images/progress2.jpg', alt: '训练阶段 2', label: '阶段 2' }
 ];
 
-const defaultReviews = [
-  { id: 1, name: '肌酸一水合物', type: '补剂', score: 4.8, note: '力量输出稳定提升，性价比高。' },
-  { id: 2, name: '乳清蛋白', type: '补剂', score: 4.5, note: '补足蛋白方便，训练后恢复更顺畅。' },
-  { id: 3, name: '拉力带', type: '工具', score: 4.6, note: '背部训练末组更集中，减少握力短板干扰。' },
-  { id: 4, name: '举重腰带', type: '工具', score: 4.3, note: '大重量深蹲和硬拉安全感明显提高。' }
-];
 
 function ContactIcons({ compact = false }) {
   return (
