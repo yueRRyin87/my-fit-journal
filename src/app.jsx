@@ -43,6 +43,13 @@ const progressSlides = [
   { src: '/assets/images/progress2.jpg', alt: '训练阶段 2', label: '阶段 2' }
 ];
 
+const defaultReviews = [
+  { id: 1, name: '肌酸一水合物', type: '补剂', score: 4.8, note: '力量输出稳定提升，性价比高。' },
+  { id: 2, name: '乳清蛋白', type: '补剂', score: 4.5, note: '补足蛋白方便，训练后恢复更顺畅。' },
+  { id: 3, name: '拉力带', type: '工具', score: 4.6, note: '背部训练末组更集中，减少握力短板干扰。' },
+  { id: 4, name: '举重腰带', type: '工具', score: 4.3, note: '大重量深蹲和硬拉安全感明显提高。' }
+];
+
 function ContactIcons({ compact = false }) {
   return (
     <div className={`contact-icons ${compact ? 'compact' : ''}`}>
@@ -94,8 +101,12 @@ function App() {
 
   useEffect(() => {
     const load = async () => {
-      const reviewsRes = await fetch(`${API_BASE}/reviews`).then((r) => r.json());
-      setReviews(reviewsRes);
+      try {
+        const reviewsRes = await fetch(`${API_BASE}/reviews`).then((r) => r.json());
+        setReviews(Array.isArray(reviewsRes) && reviewsRes.length ? reviewsRes : defaultReviews);
+      } catch {
+        setReviews(defaultReviews);
+      }
     };
     load();
   }, []);
@@ -113,11 +124,6 @@ function App() {
     return () => observer.disconnect();
   }, [reviews]);
 
-  const metricTrend = [
-    { label: '体重', start: '58kg', now: '67kg' },
-    { label: '体脂率', start: '24%', now: '17%' },
-    { label: '骨骼肌', start: '22kg', now: '29kg' }
-  ];
 
   const bulkRecipes = [
     {
@@ -213,14 +219,6 @@ function App() {
               <article className="timeline-item"><h4>2023</h4><p>两次深蹲时髋内侧拉伤，逐渐重视运动安全</p></article>
               <article className="timeline-item"><h4>2024-现在</h4><p>四分化训练缓慢增肌</p></article>
             </div>
-            <div className="metric-row">
-              {metricTrend.map((m) => (
-                <article className="metric-chip" key={m.label}>
-                  <strong>{m.label}</strong>
-                  <span>{m.start} → {m.now}</span>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -270,7 +268,7 @@ function App() {
           </div>
         </section>
 
-        <section id="recipes" className="reveal split-layout recipe-section">
+        <section id="recipes" className="reveal split-layout reverse recipe-section">
           <div className="visual-column">
                        <div className="phone-hero soft">
               <img src="/assets/images/after_meals.jpg" alt="增肌期饮食" loading="lazy" />
