@@ -211,18 +211,6 @@ section { margin: 78px 0 96px; }
 .timeline-item p,
 .review-row p { margin: 0; }
 
-.metric-row {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-.metric-chip {
-  padding: 12px 0;
-  border-top: 1px solid var(--line);
-}
-.metric-chip strong { display: block; margin-bottom: 5px; }
-.metric-chip span { color: var(--muted); font-size: 14px; }
 
 .review-row {
   padding: 14px 0;
