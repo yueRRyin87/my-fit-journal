@@ -25,7 +25,7 @@ const milestones = [
   {
     year: '2024.11',
     title: '第一次硬拉破 100kg/rep',
-    detail: '硬拉做到 102.5kg，动作稳定性和核心控制都更加稳定。',
+    detail: '硬拉做到 102.5kg，动作稳定性和核心控制都更加稳定',
     media: '/assets/images/deadlift-100.jpg',
     mediaAlt: '硬拉突破 100kg'
   },
@@ -76,7 +76,8 @@ function Navbar() {
           <h1 className="logo">My Fit Journal</h1>
           <nav>
             {items.map(([key, label]) => (
-              <button key={key} className="nav-btn" onClick={() => jumpTo(key)}>{label}</button>
+              // biome-ignore lint/a11y/useButtonType: <explanation>
+<button key={key} className="nav-btn" onClick={() => jumpTo(key)}>{label}</button>
             ))}
           </nav>
           <ContactIcons compact />
@@ -107,6 +108,7 @@ function App() {
       });
     }, { threshold: 0.15 });
 
+    // biome-ignore lint/suspicious/useIterableCallbackReturn: <explanation>
     items.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, [reviews]);
@@ -121,12 +123,12 @@ function App() {
     {
       name: '高蛋白牛肉能量饭',
       macro: '约 720 kcal · 蛋白质 52g · 碳水 78g · 脂肪 20g',
-      detail: '瘦牛肉 180g + 米饭 220g + 彩椒洋葱 + 橄榄油少量，训练后 1 小时内吃。'
+      detail: '瘦牛肉 180g + 米饭 220g + 彩椒洋葱 + 橄榄油少量，高蛋白高碳'
     },
     {
       name: '鸡腿藜麦恢复碗',
       macro: '约 680 kcal · 蛋白质 48g · 碳水 64g · 脂肪 24g',
-      detail: '去皮鸡腿肉 200g + 藜麦 120g + 牛油果半个，适合晚间补充恢复。'
+      detail: '去皮鸡腿肉 200g + 藜麦 120g + 牛油果半个，适合晚间补充恢复'
     },
     {
       name: 'ON摩卡巧克力蛋白奶昔',
@@ -208,8 +210,8 @@ function App() {
             <div className="timeline-list">
               <article className="timeline-item"><h4>2021</h4><p>正式开始训练，建立一周二练习惯</p></article>
               <article className="timeline-item"><h4>2022</h4><p>增加蛋白质摄入，增肌效果明显</p></article>
-              <article className="timeline-item"><h4>2023</h4><p>学习恢复管理和运动康复，降低伤病风险</p></article>
-              <article className="timeline-item"><h4>2024-现在</h4><p>四分化训练</p></article>
+              <article className="timeline-item"><h4>2023</h4><p>两次深蹲时髋内侧拉伤，逐渐重视运动安全</p></article>
+              <article className="timeline-item"><h4>2024-现在</h4><p>四分化训练缓慢增肌</p></article>
             </div>
             <div className="metric-row">
               {metricTrend.map((m) => (
