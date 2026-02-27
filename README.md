@@ -5,7 +5,6 @@
 - 前端：React
 - 后端：Node.js + TypeScript（源码在 `server/src/index.ts`）
 - 功能：PR 记录、补剂/工具评价
-- 新增：在 PR 页面输入今日重量，自动对比历史最大重量（PR）并提示差距/破纪录
 
 ## 启动
 
