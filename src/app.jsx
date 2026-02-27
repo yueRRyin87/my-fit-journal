@@ -1,4 +1,4 @@
-const { useEffect, useState } = React;
+const { useEffect, useRef, useState } = React;
 
 const API_BASE = '/api';
 
@@ -12,26 +12,35 @@ const milestones = [
     year: '2021.04',
     title: '第一次接触力量训练',
     detail: '需要42.5kg辅助的引体向上',
-    media: '训练日志照片 / 视频'
+    media: '/assets/images/first_lift.jpg',
+    mediaAlt: '第一次接触力量训练'
   },
   {
     year: '2023.11',
     title: '第一次成功引体向上',
     detail: '从器械辅助到独立完成 1 次对握引体，背部训练进入新阶段',
-    media: '引体向上图片'
+    media: '/assets/images/pullup.jpg',
+    mediaAlt: '第一次成功引体向上'
   },
   {
     year: '2024.11',
     title: '第一次硬拉破 100kg/rep',
     detail: '硬拉做到 102.5kg，动作稳定性和核心控制都更加稳定。',
-    media: '硬拉 100kg'
+    media: '/assets/images/deadlift-100.jpg',
+    mediaAlt: '硬拉突破 100kg'
   },
   {
     year: '2025.112',
     title: '三大项总和持续增长',
     detail: '从 100kg 提升到 230kg，三大项缓慢提升',
-    media: '三大项总和趋势图'
+    media: '/assets/images/progress2.jpg',
+    mediaAlt: '三大项总和趋势'
   }
+];
+
+const progressSlides = [
+  { src: '/assets/images/progress1.jpg', alt: '训练阶段 1', label: '阶段 1' },
+  { src: '/assets/images/progress2.jpg', alt: '训练阶段 2', label: '阶段 2' }
 ];
 
 function ContactIcons({ compact = false }) {
@@ -79,6 +88,8 @@ function Navbar() {
 
 function App() {
   const [reviews, setReviews] = useState([]);
+  const [progressIndex, setProgressIndex] = useState(0);
+  const touchStartX = useRef(null);
 
   useEffect(() => {
     const load = async () => {
@@ -124,6 +135,30 @@ function App() {
     }
   ];
 
+  const prevProgress = () => {
+    setProgressIndex((current) => (current - 1 + progressSlides.length) % progressSlides.length);
+  };
+
+  const nextProgress = () => {
+    setProgressIndex((current) => (current + 1) % progressSlides.length);
+  };
+
+  const onTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX;
+  };
+
+  const onTouchEnd = (event) => {
+    if (touchStartX.current === null) return;
+    const endX = event.changedTouches[0].clientX;
+    const distance = endX - touchStartX.current;
+
+    if (Math.abs(distance) > 35) {
+      if (distance > 0) prevProgress();
+      else nextProgress();
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <div>
       <Navbar />
@@ -136,20 +171,36 @@ function App() {
             <p>我和健身的三年</p>
           </div>
           <div className="visual-column">
-           <div className="phone-hero">
-              <img src="images/main_visual.jpg" alt="训练主视觉图" />
-          </div>
+            <div className="phone-hero">
+              <img src="/assets/images/main_visual.jpg" alt="训练主视觉图" />
+            </div>
           </div>
         </section>
 
         <section id="journey" className="reveal split-layout reverse">
-          <div className="visual-column collage">
-            <div className="photo-block tall">
-                <img src="/images/progress1.jpg" alt="训练阶段 1" />
+          <div className="visual-column">
+            <div className="progress-slider" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+              <div className="progress-track" style={{ transform: `translateX(-${progressIndex * 100}%)` }}>
+                {progressSlides.map((slide) => (
+                  <div className="progress-slide" key={slide.src}>
+                    <img src={slide.src} alt={slide.alt} />
+                  </div>
+                ))}
               </div>
-              <div className="photo-block">
-                <img src="/images/progress2.jpg" alt="训练阶段 2" />
-                </div>
+              <button type="button" className="progress-nav left" onClick={prevProgress} aria-label="上一张">‹</button>
+              <button type="button" className="progress-nav right" onClick={nextProgress} aria-label="下一张">›</button>
+            </div>
+            <div className="progress-dots" role="tablist" aria-label="训练进度图片">
+              {progressSlides.map((slide, index) => (
+                <button
+                  key={slide.src}
+                  type="button"
+                  className={`progress-dot ${index === progressIndex ? 'active' : ''}`}
+                  onClick={() => setProgressIndex(index)}
+                  aria-label={`查看${slide.label}`}
+                />
+              ))}
+            </div>
           </div>
           <div className="text-column">
             <p className="kicker">My Fitness Journey</p>
@@ -186,7 +237,9 @@ function App() {
                     <h4>{item.title}</h4>
                     <p>{item.detail}</p>
                   </div>
-                  <div className="milestone-media">{item.media}</div>
+                  <div className="milestone-media">
+                    <img src={item.media} alt={item.mediaAlt} loading="lazy" />
+                  </div>
                 </div>
                 <span className="milestone-dot" aria-hidden="true" />
               </article>
@@ -196,7 +249,9 @@ function App() {
 
         <section id="supplements" className="reveal split-layout">
           <div className="visual-column">
-            <div className="phone-hero soft">补剂 / 工具图片位</div>
+            <div className="phone-hero soft">
+              <img src="/assets/images/straps.jpg" alt="护腕和训练工具" loading="lazy" />
+            </div>
           </div>
           <div className="text-column">
             <p className="kicker">Supplements & Tools</p>
@@ -215,7 +270,9 @@ function App() {
 
         <section id="recipes" className="reveal split-layout recipe-section">
           <div className="visual-column">
-            <div className="phone-hero soft">我的增肌食谱实拍 / 备餐视频位</div>
+            <div className="phone-hero soft">
+              <img src="/assets/images/first_lift.jpg" alt="力量训练记录照片" loading="lazy" />
+            </div>
           </div>
           <div className="text-column">
             <p className="kicker">My Bulking Recipes</p>
